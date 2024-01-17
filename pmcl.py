@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from typing import Any
 
 # Form implementation generated from reading ui file 'pmcl_main.ui'
 #
@@ -12,6 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import sys
 import os
+import shelve
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -79,42 +81,52 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def run(self):
         maxmb = self.maxmb_t.text()
         username_text = self.username.text()
+        version = self.game_c.currentText()
         with open("username.txt", "w") as file:
             file.write(username_text)
             pass
         with open('maxmb.txt', 'w') as maxmb_f:
             maxmb_f.write(maxmb)
-        version = self.game_c.currentText()
+        with open('version.txt', 'w') as version_f:
+            version_f.write(version)
         print(maxmb, username_text,version)
         if version == '1.8.9 Forge':
-            if maxmb < '1024':
-                QMessageBox.critical(self, 'ERROR', '请输入大于1024的数！', QMessageBox.Ok)
-            else:
-                 try:
-                    os.startfile('start_1_8_9.bat')
-                 except:
-                    QMessageBox.critical(self, 'ERROR', '无法启动游戏，请尝试重新安装。')
+            version = 'vapeV4.04'
+            with open('version.txt', 'w') as version_f:
+                version_f.write(version)
+            try:
+                with shelve.open('main') as db:
+                    db['startgame'] = 1 
+                    db.close()
+                os.startfile('start_game.bat')
+            except:
+                QMessageBox.critical(self, 'ERROR', '无法启动游戏，请尝试重新安装。')
                     
         else:
             QMessageBox.critical(self, 'ERROR', '暂未做完......', QMessageBox.Close)
-            return 0
     def kg(self):
-        QMessageBox.information(self, 'warning', '启动后请不要关闭server.exe这个程序!!!!', QMessageBox.Ok)
-        try:
-            os.startfile('kg.exe')
-        except:
-            QMessageBox.critical(self, 'ERROR', '无法启动', QMessageBox.Ok)
-
-
+        with shelve.open("main") as db:
+            vape_run: Any | None = db.get('vape_run')
+            if vape_run == True:
+                # run
+                QMessageBox.information(self, 'warning', '启动后请不要关闭server.exe这个程序!!!!', QMessageBox.Ok)
+                QMessageBox.warning(self, '注意！', '可能有病毒，请小心使用！！')
+            try:
+                os.startfile('kg.exe')
+            except:
+                QMessageBox.critical(self, 'ERROR', '无法启动，请尝试重新安装！', QMessageBox.Ok)
+            else:
+                QMessageBox.critical(self, '提示', '你已经启动vape了！！')
+        pass
 
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Pmcl 1.0.0"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Pmcl 1.0.1"))
         self.label_4.setText(_translate("MainWindow", "最大内存："))
         self.maxmb_t.setText(_translate("MainWindow", "1145"))
         self.pushButton.setText(_translate("MainWindow", "开vape"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600; color:#1c33fe;\">python minecraft launcher v1.0.0</span></p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600; color:#1c33fe;\">Python minecraft launcher V1.0.1</span></p></body></html>"))
         self.label_3.setText(_translate("MainWindow", "游戏姓名："))
         self.username.setText(_translate("MainWindow", "sb001"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">游戏版本：</span></p></body></html>"))
