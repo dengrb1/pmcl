@@ -6,9 +6,9 @@
 可以把我的世界1.8.9forge版启动！  
 支持vape一键注入！！
 
-#### Gitee库
-此项目在Gitee上面已开源，主要更新在Gitee，所以GitHub更新会慢一些  
-**项目地址**:[https://gitee.com/dengrb1/pmcl](https://)
+### Github库
+此项目在Github上面也已开源，主要更新在Gitee，所以GitHub更新会慢一些
+项目地址:[https://github.com/dengrb1/pmcl](https://)
 
 
 
@@ -20,4 +20,5 @@
 
 #### 更新日志
 
-1.0.0 没什么好说的，自己看
+1.0.0 没什么好说的，自己看  
+1.0.1 加入游戏启动检测，并增加程序自由性
