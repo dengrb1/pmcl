@@ -12,7 +12,7 @@
 
 #### 安装教程
 
-1.  从[https://gitee.com/dengrb1/pmcl/releases](http://)里下载最新版本 _**（注：文件开头是“Pmcl”全都要下载！！）**_ 
+1.  从[https://gitee.com/dengrb1/pmcl/releases](http://)里下载最新版本 **（注：文件开头是“Pmcl”全都要下载！！）**
 2.  打开**pmcl_setup.7z.001** 文件并解压
 3.  打开安装包安装完成即可使用  
 **因为gitee的总附件只有1GB的存储空间，所以现在无法发送安装包（问题以后可能会修复）**
