@@ -6,7 +6,7 @@
 可以把我的世界1.8.9forge版启动！  
 支持vape一键注入！！
 
-### Github库
+### Gitee库
 此项目在Github上面也已开源，主要更新在Gitee，所以GitHub更新会慢一些
 项目地址:[https://github.com/dengrb1/pmcl](https://)
 
