@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>306</width>
+    <height>250</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>选择外挂</string>
+  </property>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>190</y>
+     <width>121</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #8a9195, stop:1 black);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 25px;
+        }
+
+        QPushButton:hover {
+            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #7d8488, stop:1 black);
+        }
+
+        QPushButton:pressed {
+            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #6a7073, stop:1 black);
+        }
+        &quot;&quot;&quot;)</string>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>20</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600; color:#ff0000;&quot;&gt;请选择外挂&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>100</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;版本:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>100</y>
+     <width>111</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
+            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:1, stop:0 #f5f5f7, stop:1 #dedee0);
+            border: 1px solid whitesmoke;
+            border-radius: 3px;
+            padding-left: 15px;
+            color: gray;
+        }
+
+        QComboBox::drop-down {
+            width: 22px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        QComboBox::down-arrow {
+            width: 16px;
+            height: 16px;
+            image: url(PATH_TO_IMG);
+        }
+
+        QComboBox QAbstractItemView {
+            color: gray;
+            border: none;
+            outline: none;
+            background-color: #dedee0;
+        }
+
+        QComboBox QScrollBar:vertical {
+            width: 2px;
+            background-color: white;
+        }
+
+        QComboBox QScrollBar::handle:vertical {
+            background-color: #b2bdaf;
+        }
+        &quot;&quot;&quot;)</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>Vape lite</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Vape V4</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

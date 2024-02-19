@@ -14,6 +14,11 @@ import sys
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtWidgets import QWidget, QGraphicsBlurEffect
+from PyQt5.QtCore import Qt
+
+from time import sleep
 
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
@@ -23,51 +28,185 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(475, 226)
+        MainWindow.resize(534, 226)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setObjectName("label_4")
-        self.horizontalLayout_3.addWidget(self.label_4)
-        self.maxmb_t = QtWidgets.QLineEdit(self.centralwidget)
-        self.maxmb_t.setObjectName("maxmb_t")
-        self.horizontalLayout_3.addWidget(self.maxmb_t)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 2, 1, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 4, 4, 1, 1)
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setObjectName("label")
-        self.gridLayout.addWidget(self.label, 0, 1, 1, 4)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_2.addWidget(self.label_3)
         self.username = QtWidgets.QLineEdit(self.centralwidget)
+        self.username.setStyleSheet("QLineEdit {\n"
+"            border-top: none;\n"
+"            border-left: none;\n"
+"            border-right: none;\n"
+"            border-bottom: 1px solid black;\n"
+"            background-color: transparent;\n"
+"        }\n"
+"        \n"
+"        QLineEdit:focus {\n"
+"            border-bottom: 1px solid #2a70f4;\n"
+"        }\n"
+"        \"\"\")")
         self.username.setObjectName("username")
         self.horizontalLayout_2.addWidget(self.username)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 2, 2, 1, 3)
-        spacerItem = QtWidgets.QSpacerItem(454, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 1, 1, 1, 4)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 2, 1, 3)
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 0, 1, 1, 4)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)
         self.game_c = QtWidgets.QComboBox(self.centralwidget)
+        self.game_c.setStyleSheet("QComboBox {\n"
+"            background-color: white;\n"
+"            color: black;\n"
+"            border: 1px solid lightgray;\n"
+"            border-radius: 15px;\n"
+"            padding-left: 15px;\n"
+"        }\n"
+"        \n"
+"        QComboBox:on {\n"
+"            border: 1px solid #63acfb;\n"
+"        }\n"
+"\n"
+"        QComboBox::drop-down {\n"
+"            width: 22px;\n"
+"            border-left: 1px solid lightgray;\n"
+"            border-top-right-radius: 15px;\n"
+"            border-bottom-right-radius: 15px;\n"
+"        }\n"
+"        \n"
+"        QComboBox::drop-down:on {\n"
+"            border-left: 1px solid #63acfb;\n"
+"        }\n"
+"\n"
+"        QComboBox::down-arrow {\n"
+"            width: 16px;\n"
+"            height: 16px;\n"
+"            image: url(PATH_TO_IMG);\n"
+"        }\n"
+"\n"
+"        QComboBox::down-arrow:on {\n"
+"            image: url(PATH_TO_IMG);\n"
+"        }\n"
+"\n"
+"        QComboBox QAbstractItemView {\n"
+"            color: black;\n"
+"            border: none;\n"
+"            outline: none;\n"
+"            background-color: whitesmoke;\n"
+"        }\n"
+"\n"
+"        QComboBox QScrollBar:vertical {\n"
+"            width: 2px;\n"
+"            background-color: white;\n"
+"        }\n"
+"\n"
+"        QComboBox QScrollBar::handle:vertical {\n"
+"            background-color: #b2bdaf;\n"
+"        }\n"
+"        \"\"\")")
         self.game_c.setObjectName("game_c")
         self.game_c.addItem("")
         self.game_c.addItem("")
         self.horizontalLayout.addWidget(self.game_c)
-        self.gridLayout.addLayout(self.horizontalLayout, 3, 1, 1, 2)
+        self.gridLayout.addLayout(self.horizontalLayout, 2, 1, 1, 2)
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setStyleSheet("QPushButton {\n"
+"            background-color: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 #47a7ed, stop: 1 #a967b2);\n"
+"            color: white;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            border-radius: 25px;\n"
+"        }\n"
+"        \n"
+"        QPushButton:hover {\n"
+"            background-color: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 #459ee0, stop: 1 #995da1);\n"
+"        }\n"
+"        \n"
+"        QPushButton:pressed {\n"
+"               background-color: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 #4093d1, stop: 1 #87538e);\n"
+"        }\n"
+"        \"\"\")")
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 4, 3, 1, 1)
+        self.settings = QtWidgets.QPushButton(self.centralwidget)
+        self.settings.setStyleSheet("QPushButton {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #8a9195, stop:1 black);\n"
+"            color: white;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            border-radius: 25px;\n"
+"        }\n"
+"\n"
+"        QPushButton:hover {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #7d8488, stop:1 black);\n"
+"        }\n"
+"\n"
+"        QPushButton:pressed {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #6a7073, stop:1 black);\n"
+"        }\n"
+"        \"\"\")")
+        self.settings.setObjectName("settings")
+        self.gridLayout.addWidget(self.settings, 4, 4, 1, 1)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_3.addWidget(self.label_4)
+        self.maxmb_t = QtWidgets.QLineEdit(self.centralwidget)
+        self.maxmb_t.setStyleSheet("QLineEdit {\n"
+"            border-top: none;\n"
+"            border-left: none;\n"
+"            border-right: none;\n"
+"            border-bottom: 1px solid black;\n"
+"            background-color: transparent;\n"
+"        }\n"
+"        \n"
+"        QLineEdit:focus {\n"
+"            border-bottom: 1px solid #2a70f4;\n"
+"        }\n"
+"        \"\"\")")
+        self.maxmb_t.setObjectName("maxmb_t")
+        self.horizontalLayout_3.addWidget(self.maxmb_t)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 1, 1, 1, 1)
         self.run_game = QtWidgets.QPushButton(self.centralwidget)
+        self.run_game.setStyleSheet("QPushButton {\n"
+"            background-color: #57bd6a;\n"
+"            color: #f9ffff;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            border-radius: 5px;\n"
+"        }\n"
+"\n"
+"        QPushButton:pressed {\n"
+"            background-color: #4eaa5f;\n"
+"        }\n"
+"        \"\"\")")
         self.run_game.setObjectName("run_game")
-        self.gridLayout.addWidget(self.run_game, 4, 3, 1, 1)
+        self.gridLayout.addWidget(self.run_game, 4, 1, 1, 1)
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setStyleSheet("QPushButton {\n"
+"            background-color: #292929;\n"
+"            border-radius: 5px;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            color: white;\n"
+"            border: 1px solid white;\n"
+"        }\n"
+"\n"
+"        QPushButton:pressed {\n"
+"            background-color: black;\n"
+"        }\n"
+"        \"\"\")")
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 2, 3, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -84,6 +223,22 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         maxmb = self.maxmb_t.text()
         username_text = self.username.text()
         version = self.game_c.currentText()
+        if version == '1.12.2 Forge':
+            QMessageBox.critical(self, 'Error', '启动失败！版本不支持！')
+            return 'error'
+        else:
+            pass
+        # 检测maxmb变量是否为数
+        if username_text == None or maxmb == None or version == None:
+            QMessageBox.critical(self, 'ERROR', '请填完信息', QMessageBox.Ok)
+        if maxmb.isnumeric():
+            pass
+        else:
+            QMessageBox.critical(self, 'Error', '最大内存必须是数字！', QMessageBox.Ok)
+            return 'maxmb'
+        # 检测maxmb变量是否小于900
+        if int(maxmb) < 900:
+            QMessageBox.critical(self, 'ERROR', '内存设置必须要900mb以上！', QMessageBox.Ok)
         with open("username.txt", "w") as file:
             file.write(username_text)
             pass
@@ -92,47 +247,291 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         with open('version.txt', 'w') as version_f:
             version_f.write(version)
         print(maxmb, username_text, version)
-        if version == '1.8.9 Forge':
-            version = 'vapeV4.04'
-            with open('version.txt', 'w') as version_f:
-                version_f.write(version)
-            try:
-                with shelve.open('main') as db:
-                    db['startgame'] = True
-                    db.close()
-                os.startfile('start_game.bat')
-            except:
-                QMessageBox.critical(self, 'ERROR', '无法启动游戏，请尝试重新安装。')
+        try:
+            self.save_pro()
+            os.startfile('start_game.bat')
+        except:
+            QMessageBox.critical(self, 'Error' ,'启动失败！未知错误?' ,QMessageBox.Ok)
+            return 'error'
 
-        else:
-            QMessageBox.critical(self, 'ERROR', '暂未做完......', QMessageBox.Close)
+    def save_pro(self):
+        with shelve.open('main') as db:
+            db['username'] = self.username.text()
+            db['maxmb'] = self.maxmb_t.text()
+            db.close()
+
+    def dq_pro(self):
+        # 读取配置
+        with shelve.open('main') as db:
+            username = db.get('username')
+            maxmb = db.get('maxmb')
+            version = db.get('version')
+            self.username.setText(username)
+            self.maxmb_t.setText(maxmb)
+            self.game_c.setCurrentText(version)
+            db.close()
 
     def kg(self):
-        # run
-        QMessageBox.information(self, 'warning', '启动后请不要关闭server.exe这个程序!!!!', QMessageBox.Ok)
-        QMessageBox.warning(self, '注意！', '可能有病毒，请小心使用！！')
-        try:
-            os.startfile('kg.exe')
-        except:
-            QMessageBox.critical(self, 'ERROR', '无法启动，请尝试重新安装！', QMessageBox.Ok)
+        # 打开Kg_Ui窗口
+        self.kg_ui = Kg_Ui()
+        self.kg_ui.show()
+
+    def open_setting_window(self):
+        # 打开设置窗口
+        self.s_ui = setting_UI()
+        self.s_ui.show()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Pmcl 1.0.1"))
-        self.label_4.setText(_translate("MainWindow", "最大内存："))
-        self.maxmb_t.setText(_translate("MainWindow", "1145"))
-        self.pushButton.setText(_translate("MainWindow", "开vape"))
-        self.label.setText(_translate("MainWindow",
-                                      "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600; color:#1c33fe;\">Python minecraft launcher V1.0.1</span></p></body></html>"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Python minecraft launcher V1.1"))
         self.label_3.setText(_translate("MainWindow", "游戏姓名："))
         self.username.setText(_translate("MainWindow", "sb001"))
-        self.label_2.setText(_translate("MainWindow",
-                                        "<html><head/><body><p><span style=\" font-size:11pt;\">游戏版本：</span></p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600; color:#1c33fe;\">Python minecraft launcher V1.1</span></p></body></html>"))
+        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:11pt;\">游戏版本：</span></p></body></html>"))
         self.game_c.setItemText(0, _translate("MainWindow", "1.8.9 Forge"))
         self.game_c.setItemText(1, _translate("MainWindow", "1.12.2 Forge"))
+        self.pushButton.setText(_translate("MainWindow", "开vape"))
+        self.settings.setText(_translate("MainWindow", "设置"))
+        self.label_4.setText(_translate("MainWindow", "最大内存："))
+        self.maxmb_t.setText(_translate("MainWindow", "1145"))
         self.run_game.setText(_translate("MainWindow", "开始游戏"))
+        self.pushButton_2.setText(_translate("MainWindow", "读取配置"))
+        self.pushButton_2.clicked.connect(self.dq_pro)
         self.pushButton.clicked.connect(self.kg)
         self.run_game.clicked.connect(self.run)
+        self.settings.clicked.connect(self.open_setting_window)
+
+
+class setting_UI(QtWidgets.QDialog):
+    def __init__(self):
+        super(setting_UI, self).__init__()
+        self.setupUi(self)
+        self.setFixedSize(self.width(), self.height())
+
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(358, 300)
+        self.layoutWidget = QtWidgets.QWidget(Form)
+        self.layoutWidget.setGeometry(QtCore.QRect(90, 50, 172, 201))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.pushButton = QtWidgets.QPushButton(self.layoutWidget)
+        self.pushButton.setStyleSheet("QPushButton {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #8a9195, stop:1 black);\n"
+"            color: white;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            border-radius: 25px;\n"
+"        }\n"
+"\n"
+"        QPushButton:hover {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #7d8488, stop:1 black);\n"
+"        }\n"
+"\n"
+"        QPushButton:pressed {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #6a7073, stop:1 black);\n"
+"        }\n"
+"        \"\"\")")
+        self.pushButton.setObjectName("pushButton")
+        self.verticalLayout.addWidget(self.pushButton)
+        self.pushButton_2 = QtWidgets.QPushButton(self.layoutWidget)
+        self.pushButton_2.setStyleSheet("QPushButton {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #8a9195, stop:1 black);\n"
+"            color: white;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            border-radius: 25px;\n"
+"        }\n"
+"\n"
+"        QPushButton:hover {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #7d8488, stop:1 black);\n"
+"        }\n"
+"\n"
+"        QPushButton:pressed {\n"
+"            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #6a7073, stop:1 black);\n"
+"        }\n"
+"        \"\"\")")
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.verticalLayout.addWidget(self.pushButton_2)
+        self.pushButton_5 = QtWidgets.QPushButton(self.layoutWidget)
+        self.pushButton_5.setStyleSheet("QPushButton {\n"
+"            background-color: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 #47a7ed, stop: 1 #a967b2);\n"
+"            color: white;\n"
+"            font-size: 20px;\n"
+"            font-weight: bold;\n"
+"            border-radius: 25px;\n"
+"        }\n"
+"        \n"
+"        QPushButton:hover {\n"
+"            background-color: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 #459ee0, stop: 1 #995da1);\n"
+"        }\n"
+"        \n"
+"        QPushButton:pressed {\n"
+"               background-color: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 #4093d1, stop: 1 #87538e);\n"
+"        }\n"
+"        \"\"\")")
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.verticalLayout.addWidget(self.pushButton_5)
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(160, 10, 72, 31))
+        self.label.setObjectName("label")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def vape(self):
+        # 重置vape启动状态
+        QMessageBox.information(self, '提示', '处理成功！', QMessageBox.Ok)
+        with shelve.open('main') as db:
+            db['vaper'] = False
+            db.close()
+        self.close()
+        
+    def game(self):
+        # 重置游戏启动状态
+        with shelve.open('main') as db:
+            db['startgame'] = False
+            db.close()
+        QMessageBox.information(self, '提示', '处理成功！', QMessageBox.Ok)
+        self.close()
+
+    def del_pro(self):
+        # 删除配置
+        with shelve.open('main') as db:
+            db['username'] = ''
+            db['maxmb'] = ''
+            db['version'] = ''
+            db.close()
+        QMessageBox.information(self, '提示', '处理成功!')
+        self.close()
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "设置"))
+        self.pushButton.setText(_translate("Form", "重置vape启动状态"))
+        self.pushButton_2.setText(_translate("Form", "重置游戏启动状态"))
+        self.pushButton_5.setText(_translate("Form", "删除配置"))
+        self.label.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:14pt; font-weight:600;\">设置</span></p></body></html>"))
+        self.pushButton.clicked.connect(self.vape)
+        self.pushButton_2.clicked.connect(self.game)
+        self.pushButton_5.clicked.connect(self.del_pro)
+
+
+class Kg_Ui(QtWidgets.QDialog):
+    def __init__(self):
+        super(Kg_Ui, self).__init__()
+        self.setupUi(self)
+        self.setFixedSize(self.width(), self.height())
+
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(306, 250)
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(90, 190, 121, 23))
+        self.pushButton.setStyleSheet("QPushButton {\n"
+                                      "            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #8a9195, stop:1 black);\n"
+                                      "            color: white;\n"
+                                      "            font-size: 20px;\n"
+                                      "            font-weight: bold;\n"
+                                      "            border-radius: 25px;\n"
+                                      "        }\n"
+                                      "\n"
+                                      "        QPushButton:hover {\n"
+                                      "            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #7d8488, stop:1 black);\n"
+                                      "        }\n"
+                                      "\n"
+                                      "        QPushButton:pressed {\n"
+                                      "            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:0.3, stop:0 #6a7073, stop:1 black);\n"
+                                      "        }\n"
+                                      "        \"\"\")")
+        self.pushButton.setObjectName("pushButton")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(70, 20, 171, 31))
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(70, 100, 51, 21))
+        self.label_2.setObjectName("label_2")
+        self.comboBox = QtWidgets.QComboBox(Form)
+        self.comboBox.setGeometry(QtCore.QRect(120, 100, 111, 22))
+        self.comboBox.setStyleSheet("QComboBox {\n"
+                                    "            background-color: qlineargradient(x1:1, y1:0, x2:1, y2:1, stop:0 #f5f5f7, stop:1 #dedee0);\n"
+                                    "            border: 1px solid whitesmoke;\n"
+                                    "            border-radius: 3px;\n"
+                                    "            padding-left: 15px;\n"
+                                    "            color: gray;\n"
+                                    "        }\n"
+                                    "\n"
+                                    "        QComboBox::drop-down {\n"
+                                    "            width: 22px;\n"
+                                    "            border-top-right-radius: 3px;\n"
+                                    "            border-bottom-right-radius: 3px;\n"
+                                    "        }\n"
+                                    "\n"
+                                    "        QComboBox::down-arrow {\n"
+                                    "            width: 16px;\n"
+                                    "            height: 16px;\n"
+                                    "            image: url(PATH_TO_IMG);\n"
+                                    "        }\n"
+                                    "\n"
+                                    "        QComboBox QAbstractItemView {\n"
+                                    "            color: gray;\n"
+                                    "            border: none;\n"
+                                    "            outline: none;\n"
+                                    "            background-color: #dedee0;\n"
+                                    "        }\n"
+                                    "\n"
+                                    "        QComboBox QScrollBar:vertical {\n"
+                                    "            width: 2px;\n"
+                                    "            background-color: white;\n"
+                                    "        }\n"
+                                    "\n"
+                                    "        QComboBox QScrollBar::handle:vertical {\n"
+                                    "            background-color: #b2bdaf;\n"
+                                    "        }\n"
+                                    "        \"\"\")")
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def kg_run(self):
+        version_kg = self.comboBox.currentText()
+        if version_kg == 'Vape lite':
+            '''with shelve.open('main') as db:
+                db['vape_v'] == 'lite'
+                db.close()'''
+            QMessageBox.information(
+                self, '提示', '外挂获取渠道非官方渠道，请小心使用！', QMessageBox.Ok)
+            try:
+                os.startfile('fix.bat')
+                flie = os.getcwd()
+                os.system(f"'Kangaroo Patcher.exe' Vape_Lite.exe")
+            except:
+                QMessageBox.critical(
+                    self, 'ERROR', '启动失败！请检查文件！', QMessageBox.Ok)
+        elif version_kg == 'Vape V4':
+            '''with shelve.open('main') as db:
+                db['vape_v'] == 'v4'
+                db.close()'''
+            QMessageBox.critical(self, 'ERROR', '无法使用！', QMessageBox.Ok)
+        # 关闭窗口
+        self.close()
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "选择外挂"))
+        self.pushButton.setText(_translate("Form", "确定"))
+        self.label.setText(_translate(
+            "Form", "<html><head/><body><p><span style=\" font-size:18pt; font-weight:600; color:#ff0000;\">请选择外挂</span></p></body></html>"))
+        self.label_2.setText(_translate(
+            "Form", "<html><head/><body><p><span style=\" font-size:11pt;\">版本:</span></p></body></html>"))
+        self.comboBox.setItemText(0, _translate("Form", "Vape lite"))
+        self.comboBox.setItemText(1, _translate("Form", "Vape V4"))
+        self.pushButton.clicked.connect(self.kg_run)
 
 
 if __name__ == '__main__':
