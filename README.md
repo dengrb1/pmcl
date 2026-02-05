@@ -41,3 +41,13 @@ dotnet run --project .\src\PMCL.App\PMCL.App.csproj
 - `username.txt`
 - `maxmb.txt`
 - `version.txt`
+
+
+## GitHub Actions 自动编译
+
+仓库已添加工作流：`/.github/workflows/build-windows.yml`，在 `push / pull_request` 时会自动：
+
+1. `dotnet restore`
+2. `dotnet build -c Release`
+3. `dotnet publish` 生成 `win-x64` 构建产物
+4. 上传 Artifact：`PMCL-App-win-x64`
