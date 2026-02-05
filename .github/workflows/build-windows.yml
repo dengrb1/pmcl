@@ -1,0 +1,34 @@
+name: Build PMCL Windows App
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore .\PMCL.sln
+
+      - name: Build (Release)
+        run: dotnet build .\PMCL.sln --configuration Release --no-restore
+
+      - name: Publish Win-x64
+        run: dotnet publish .\src\PMCL.App\PMCL.App.csproj --configuration Release --runtime win-x64 --self-contained false --output .\artifacts\PMCL.App
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PMCL-App-win-x64
+          path: .\artifacts\PMCL.App
