@@ -6,13 +6,15 @@ namespace PMCL.App;
 public sealed class Account
 {
     public string Username { get; set; } = "Steve";
-    public string AccountType { get; set; } = "offline";
+    public string AccountType { get; set; } = "offline"; // offline / microsoft / yggdrasil
+    public string AccessToken { get; set; } = string.Empty;
+    public string Uuid { get; set; } = string.Empty;
 }
 
 public sealed class Profile
 {
     public string Name { get; set; } = "Default";
-    public string Version { get; set; } = "1.8.9 Forge";
+    public string Version { get; set; } = "latest-release";
     public string GameDir { get; set; } = Path.Combine(Environment.CurrentDirectory, ".minecraft");
     public string JavaPath { get; set; } = Path.Combine(Environment.CurrentDirectory, "jre-x64", "bin", "java.exe");
     public int MaxMemoryMb { get; set; } = 2048;
@@ -26,6 +28,7 @@ public sealed class LauncherConfig
     public string SelectedProfile { get; set; } = "Default";
     public string SelectedAccount { get; set; } = "Steve";
     public int KeepHistory { get; set; } = 100;
+    public string YggdrasilServer { get; set; } = "https://littleskin.cn/api/yggdrasil";
     public List<Account> Accounts { get; set; } = new() { new Account() };
     public List<Profile> Profiles { get; set; } = new() { new Profile() };
     public List<string> LaunchHistory { get; set; } = new();
@@ -51,6 +54,7 @@ public static class ConfigStore
         if (cfg.Profiles.Count == 0) cfg.Profiles.Add(new Profile());
         if (string.IsNullOrWhiteSpace(cfg.SelectedAccount)) cfg.SelectedAccount = cfg.Accounts[0].Username;
         if (string.IsNullOrWhiteSpace(cfg.SelectedProfile)) cfg.SelectedProfile = cfg.Profiles[0].Name;
+        if (string.IsNullOrWhiteSpace(cfg.YggdrasilServer)) cfg.YggdrasilServer = "https://littleskin.cn/api/yggdrasil";
 
         return cfg;
     }

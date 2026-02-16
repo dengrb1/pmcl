@@ -1,16 +1,16 @@
 # PMCL App（C# / Windows Forms）
 
-你说得对：这是 **桌面 App**，不是网页。
+这是一个使用 C#（微软语言）开发的 Minecraft 桌面启动器。
 
-本项目已将主源码迁移为微软语言 **C#**，并使用 **Windows Forms** 实现启动器 GUI。
-
-## 主要功能
+## 当前能力
 
 - 启动游戏（兼容旧 `start_game.bat`）
-- 多账户管理（offline / microsoft）
+- 多账户管理（offline / microsoft / yggdrasil）
+- 第三方账户登录（例如 LittleSkin，基于 Yggdrasil）
 - 多配置管理（版本、游戏目录、Java 路径、内存）
-- 启动历史记录
-- 导出配置 JSON
+- 下载 Minecraft 最新正式版到程序目录下 `.minecraft`
+- 启动历史记录与配置导出
+- GitHub Actions 自动编译
 
 ## 项目结构
 
@@ -19,6 +19,7 @@
 - `src/PMCL.App/Program.cs`：程序入口
 - `src/PMCL.App/MainForm.cs`：主窗口与业务逻辑
 - `src/PMCL.App/LauncherConfig.cs`：配置模型与存储
+- `src/PMCL.App/OnlineServices.cs`：版本下载与第三方登录服务
 
 ## 运行方式（Windows）
 
@@ -42,12 +43,9 @@ dotnet run --project .\src\PMCL.App\PMCL.App.csproj
 - `maxmb.txt`
 - `version.txt`
 
-
 ## GitHub Actions 自动编译
 
-仓库已添加工作流：`/.github/workflows/build-windows.yml`，在 `push / pull_request` 时会自动：
+工作流：`/.github/workflows/build-windows.yml`
 
-1. `dotnet restore`
-2. `dotnet build -c Release`
-3. `dotnet publish` 生成 `win-x64` 构建产物
-4. 上传 Artifact：`PMCL-App-win-x64`
+- 在 `push / pull_request` 自动执行 `restore/build/publish`
+- 上传 Artifact：`PMCL-App-win-x64`

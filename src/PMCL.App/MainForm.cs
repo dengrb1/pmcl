@@ -6,31 +6,37 @@ public sealed class MainForm : Form
 {
     private LauncherConfig _config = new();
 
-    private readonly ComboBox _launchProfile = new() { DropDownStyle = ComboBoxStyle.DropDownList };
-    private readonly ComboBox _launchAccount = new() { DropDownStyle = ComboBoxStyle.DropDownList };
-    private readonly TextBox _history = new() { Multiline = true, ScrollBars = ScrollBars.Vertical, ReadOnly = true, Height = 220 };
+    private readonly ComboBox _launchProfile = new() { DropDownStyle = ComboBoxStyle.DropDownList, Dock = DockStyle.Fill };
+    private readonly ComboBox _launchAccount = new() { DropDownStyle = ComboBoxStyle.DropDownList, Dock = DockStyle.Fill };
+    private readonly TextBox _history = new() { Multiline = true, ScrollBars = ScrollBars.Vertical, ReadOnly = true, Dock = DockStyle.Fill };
 
-    private readonly ListBox _profileList = new();
+    private readonly ListBox _profileList = new() { Dock = DockStyle.Fill };
     private readonly TextBox _pName = new();
     private readonly TextBox _pVersion = new();
     private readonly TextBox _pGameDir = new();
     private readonly TextBox _pJava = new();
     private readonly NumericUpDown _pMem = new() { Minimum = 900, Maximum = 16384, Value = 2048 };
 
-    private readonly ListBox _accountList = new();
+    private readonly ListBox _accountList = new() { Dock = DockStyle.Fill };
     private readonly TextBox _aName = new();
     private readonly ComboBox _aType = new() { DropDownStyle = ComboBoxStyle.DropDownList };
 
     private readonly NumericUpDown _keepHistory = new() { Minimum = 10, Maximum = 500, Value = 100 };
+    private readonly TextBox _yggdrasilServer = new() { Dock = DockStyle.Fill };
+    private readonly TextBox _yggUsername = new() { Dock = DockStyle.Fill };
+    private readonly TextBox _yggPassword = new() { Dock = DockStyle.Fill, UseSystemPasswordChar = true };
+
+    private readonly Label _status = new() { Text = "就绪", Dock = DockStyle.Fill, AutoSize = true };
 
     public MainForm()
     {
         Text = "PMCL App (C# / Windows Forms)";
-        Width = 980;
-        Height = 700;
+        Width = 1024;
+        Height = 760;
+        MinimumSize = new Size(900, 620);
         StartPosition = FormStartPosition.CenterScreen;
 
-        _aType.Items.AddRange(new object[] { "offline", "microsoft" });
+        _aType.Items.AddRange(new object[] { "offline", "microsoft", "yggdrasil" });
         _aType.SelectedIndex = 0;
 
         BuildUI();
@@ -39,33 +45,51 @@ public sealed class MainForm : Form
 
     private void BuildUI()
     {
+        var root = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 2 };
+        root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 28));
+
         var tabs = new TabControl { Dock = DockStyle.Fill };
         tabs.TabPages.Add(CreateLaunchTab());
         tabs.TabPages.Add(CreateProfileTab());
         tabs.TabPages.Add(CreateAccountTab());
         tabs.TabPages.Add(CreateSettingTab());
-        Controls.Add(tabs);
+
+        root.Controls.Add(tabs, 0, 0);
+        root.Controls.Add(_status, 0, 1);
+
+        Controls.Add(root);
     }
 
     private TabPage CreateLaunchTab()
     {
         var tab = new TabPage("启动");
-        var panel = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12) };
+        var panel = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12), RowCount = 6 };
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 24));
+        panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-        panel.Controls.Add(new Label { Text = "配置文件", AutoSize = true }, 0, 0);
+        panel.Controls.Add(new Label { Text = "配置文件", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 0);
         panel.Controls.Add(_launchProfile, 1, 0);
 
-        panel.Controls.Add(new Label { Text = "玩家账户", AutoSize = true }, 0, 1);
+        panel.Controls.Add(new Label { Text = "玩家账户", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 1);
         panel.Controls.Add(_launchAccount, 1, 1);
 
-        var launchBtn = new Button { Text = "开始游戏", Height = 35, Dock = DockStyle.Top };
+        var launchBtn = new Button { Text = "开始游戏", Dock = DockStyle.Fill };
         launchBtn.Click += (_, _) => LaunchGame();
         panel.Controls.Add(launchBtn, 1, 2);
 
-        panel.Controls.Add(new Label { Text = "启动历史", AutoSize = true }, 0, 3);
-        panel.Controls.Add(_history, 1, 3);
+        var dlBtn = new Button { Text = "下载最新正式版到 .minecraft", Dock = DockStyle.Fill };
+        dlBtn.Click += async (_, _) => await DownloadLatestAsync();
+        panel.Controls.Add(dlBtn, 1, 3);
+
+        panel.Controls.Add(new Label { Text = "启动历史", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 4);
+        panel.Controls.Add(_history, 1, 5);
 
         _launchProfile.SelectedIndexChanged += (_, _) =>
         {
@@ -92,13 +116,14 @@ public sealed class MainForm : Form
     private TabPage CreateProfileTab()
     {
         var tab = new TabPage("配置");
-        var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 260 };
+        var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 280 };
         split.Panel1.Controls.Add(_profileList);
-        _profileList.Dock = DockStyle.Fill;
 
-        var edit = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12) };
+        var edit = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12), RowCount = 6 };
         edit.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120));
         edit.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        for (var i = 0; i < 5; i++) edit.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        edit.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         AddRow(edit, 0, "名称", _pName);
         AddRow(edit, 1, "版本", _pVersion);
@@ -106,10 +131,10 @@ public sealed class MainForm : Form
         AddRow(edit, 3, "Java 路径", _pJava);
         AddRow(edit, 4, "内存(MB)", _pMem);
 
-        var rowButtons = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.LeftToRight };
-        var save = new Button { Text = "保存配置" };
-        var add = new Button { Text = "新建配置" };
-        var del = new Button { Text = "删除配置" };
+        var rowButtons = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.LeftToRight, WrapContents = false };
+        var save = new Button { Text = "保存配置", AutoSize = true };
+        var add = new Button { Text = "新建配置", AutoSize = true };
+        var del = new Button { Text = "删除配置", AutoSize = true };
 
         save.Click += (_, _) => SaveProfile();
         add.Click += (_, _) => AddProfile();
@@ -128,28 +153,40 @@ public sealed class MainForm : Form
     private TabPage CreateAccountTab()
     {
         var tab = new TabPage("账户");
-        var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 260 };
+        var split = new SplitContainer { Dock = DockStyle.Fill, SplitterDistance = 280 };
         split.Panel1.Controls.Add(_accountList);
-        _accountList.Dock = DockStyle.Fill;
 
-        var form = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12) };
+        var form = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12), RowCount = 8 };
         form.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120));
         form.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        for (var i = 0; i < 7; i++) form.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        form.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         AddRow(form, 0, "用户名", _aName);
         AddRow(form, 1, "类型", _aType);
 
-        var rowButtons = new FlowLayoutPanel { Dock = DockStyle.Fill };
-        var add = new Button { Text = "添加账户" };
-        var del = new Button { Text = "删除账户" };
+        var rowButtons = new FlowLayoutPanel { Dock = DockStyle.Fill, WrapContents = false };
+        var add = new Button { Text = "添加账户", AutoSize = true };
+        var del = new Button { Text = "删除账户", AutoSize = true };
 
         add.Click += (_, _) => AddAccount();
         del.Click += (_, _) => DeleteAccount();
 
         rowButtons.Controls.Add(add);
         rowButtons.Controls.Add(del);
-
         form.Controls.Add(rowButtons, 1, 2);
+
+        form.Controls.Add(new Label { Text = "LittleSkin 服务器", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 3);
+        form.Controls.Add(_yggdrasilServer, 1, 3);
+        form.Controls.Add(new Label { Text = "登录邮箱/用户名", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 4);
+        form.Controls.Add(_yggUsername, 1, 4);
+        form.Controls.Add(new Label { Text = "密码", AutoSize = true, Anchor = AnchorStyles.Left }, 0, 5);
+        form.Controls.Add(_yggPassword, 1, 5);
+
+        var yggLoginBtn = new Button { Text = "第三方登录（LittleSkin）", Dock = DockStyle.Fill };
+        yggLoginBtn.Click += async (_, _) => await LoginYggdrasilAsync();
+        form.Controls.Add(yggLoginBtn, 1, 6);
+
         split.Panel2.Controls.Add(form);
 
         tab.Controls.Add(split);
@@ -159,13 +196,16 @@ public sealed class MainForm : Form
     private TabPage CreateSettingTab()
     {
         var tab = new TabPage("设置");
-        var panel = new TableLayoutPanel { Dock = DockStyle.Top, ColumnCount = 2, Padding = new Padding(12), Height = 160 };
+        var panel = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Padding = new Padding(12), RowCount = 3 };
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 140));
         panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
+        panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         AddRow(panel, 0, "保留历史条数", _keepHistory);
 
-        var export = new Button { Text = "导出配置 JSON" };
+        var export = new Button { Text = "导出配置 JSON", Dock = DockStyle.Fill };
         export.Click += (_, _) => ExportConfig();
         panel.Controls.Add(export, 1, 1);
 
@@ -182,12 +222,7 @@ public sealed class MainForm : Form
 
     private static void AddRow(TableLayoutPanel panel, int row, string label, Control input)
     {
-        if (panel.RowStyles.Count <= row)
-        {
-            panel.RowCount = row + 1;
-            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 38));
-        }
-        panel.Controls.Add(new Label { Text = label, AutoSize = true }, 0, row);
+        panel.Controls.Add(new Label { Text = label, AutoSize = true, Anchor = AnchorStyles.Left }, 0, row);
         input.Dock = DockStyle.Fill;
         panel.Controls.Add(input, 1, row);
     }
@@ -218,6 +253,7 @@ public sealed class MainForm : Form
         _accountList.Items.AddRange(_config.Accounts.Select(a => $"{a.Username} ({a.AccountType})").Cast<object>().ToArray());
 
         _keepHistory.Value = Math.Min(_keepHistory.Maximum, Math.Max(_keepHistory.Minimum, _config.KeepHistory));
+        _yggdrasilServer.Text = _config.YggdrasilServer;
 
         _launchProfile.SelectedItem = _config.SelectedProfile;
         _launchAccount.SelectedItem = _config.SelectedAccount;
@@ -273,7 +309,7 @@ public sealed class MainForm : Form
     private void AddProfile()
     {
         var name = $"Profile-{_config.Profiles.Count + 1}";
-        _config.Profiles.Add(new Profile { Name = name, Version = "1.20.1 Vanilla", GameDir = ".minecraft", JavaPath = "java" });
+        _config.Profiles.Add(new Profile { Name = name, Version = "latest-release", GameDir = Path.Combine(Environment.CurrentDirectory, ".minecraft"), JavaPath = "java" });
         _config.SelectedProfile = name;
         SaveConfig();
         BindAll();
@@ -332,6 +368,69 @@ public sealed class MainForm : Form
         BindAll();
     }
 
+    private async Task LoginYggdrasilAsync()
+    {
+        var username = _yggUsername.Text.Trim();
+        var password = _yggPassword.Text;
+        var server = _yggdrasilServer.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            MessageBox.Show("请填写 LittleSkin 账户和密码。", "提示");
+            return;
+        }
+
+        SetStatus("正在登录第三方账户...");
+        var (ok, message, account) = await YggdrasilAuthService.LoginAsync(server, username, password);
+        if (!ok || account is null)
+        {
+            SetStatus("第三方登录失败");
+            MessageBox.Show(message, "错误");
+            return;
+        }
+
+        _config.YggdrasilServer = server;
+        var existed = _config.Accounts.FirstOrDefault(a => a.Username == account.Username && a.AccountType == "yggdrasil");
+        if (existed is null)
+            _config.Accounts.Add(account);
+        else
+        {
+            existed.AccessToken = account.AccessToken;
+            existed.Uuid = account.Uuid;
+        }
+
+        _config.SelectedAccount = account.Username;
+        SaveConfig();
+        BindAll();
+
+        SetStatus("第三方登录成功");
+        MessageBox.Show(message, "提示");
+    }
+
+    private async Task DownloadLatestAsync()
+    {
+        var targetDir = Path.Combine(Environment.CurrentDirectory, ".minecraft");
+        SetStatus("正在下载最新正式版...");
+
+        var (ok, message, versionId) = await MinecraftDownloader.DownloadLatestReleaseAsync(targetDir);
+        if (!ok)
+        {
+            SetStatus("下载失败");
+            MessageBox.Show(message, "错误");
+            return;
+        }
+
+        var defaultProfile = _config.Profiles.FirstOrDefault(p => p.Name == _config.SelectedProfile) ?? _config.Profiles[0];
+        defaultProfile.GameDir = targetDir;
+        if (!string.IsNullOrWhiteSpace(versionId)) defaultProfile.Version = versionId;
+
+        SaveConfig();
+        BindAll();
+
+        SetStatus("下载完成");
+        MessageBox.Show(message, "提示");
+    }
+
     private void LaunchGame()
     {
         var profile = _config.Profiles.FirstOrDefault(p => p.Name == _config.SelectedProfile);
@@ -364,15 +463,18 @@ public sealed class MainForm : Form
                     UseShellExecute = true,
                     WorkingDirectory = Environment.CurrentDirectory
                 });
+                SetStatus("已触发启动");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"启动失败: {ex.Message}", "错误");
+                SetStatus("启动失败");
             }
         }
         else
         {
             MessageBox.Show("未检测到 start_game.bat，已仅保存配置。", "提示");
+            SetStatus("未找到 start_game.bat");
         }
 
         SaveConfig();
@@ -391,5 +493,10 @@ public sealed class MainForm : Form
 
         File.Copy(ConfigStore.ConfigPath, dialog.FileName, overwrite: true);
         MessageBox.Show("导出完成。", "提示");
+    }
+
+    private void SetStatus(string text)
+    {
+        _status.Text = $"状态: {text}";
     }
 }
