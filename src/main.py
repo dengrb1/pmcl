@@ -1,8 +1,7 @@
 """
 PMCL - Python Minecraft Launcher
-Main entry point with backward compatibility.
 
-This module provides the legacy entry point while using the refactored codebase.
+A simple Minecraft launcher with GUI.
 """
 
 import sys
@@ -13,11 +12,16 @@ from src.ui import MainWindow
 
 
 def main():
-    """Main entry point for pmcl.py."""
+    """Main entry point for the application."""
     app = QtWidgets.QApplication(sys.argv)
+    
+    # Initialize configuration manager
     config_manager = ConfigManager()
+    
+    # Create and show main window
     window = MainWindow(config_manager=config_manager)
     window.show()
+    
     sys.exit(app.exec_())
 
 
